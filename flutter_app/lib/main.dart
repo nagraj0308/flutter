@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/curd.dart';
 import 'package:flutter_app/form.dart';
 
 void main() => runApp(MyApp());
@@ -13,10 +14,10 @@ class MyApp extends StatelessWidget {
       title: 'Startup Name Generator',
       theme: ThemeData(
         // Add the 3 lines from here...
-        primaryColor: Colors.white,
+        primaryColor: Colors.green,
       ), // ... to here.
       // home: RandomWords(),
-      home: FormScreen(),
+      home: Curd(),
     );
   }
 }
