@@ -73,7 +73,7 @@ class FormScreenState extends State<FormScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Form Demo')),
       body: Container(
-        margin: EdgeInsets.all(24),
+        margin: EdgeInsets.all(20),
         child: Form(
             key: _formKey,
             child: Column(

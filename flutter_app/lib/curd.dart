@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/db_helper.dart';
 
-final dummySnapshot = [
-  {"name": "Filip", "votes": 15},
-  {"name": "Abraham", "votes": 14},
-  {"name": "Richard", "votes": 11},
-  {"name": "Ike", "votes": 10},
-  {"name": "Justin", "votes": 1},
-];
+import 'contact.dart';
 
 class Curd extends StatefulWidget {
   @override
-  _MyHomePageState createState() {
-    return _MyHomePageState();
+  State<StatefulWidget> createState() {
+    return CurdState();
   }
 }
 
 class CurdState extends State<Curd> {
+  ContactHelper _contactHelper = ContactHelper();
   String _firstName;
   String _lastName;
-  String _age;
-  String _gender;
+  String _mobile;
+  bool _gender;
+
+  @override
+  void initState() {
+    _contactHelper.initializeDatabase().then((value) => {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Database Initialised !!"))),
+        });
+    super.initState();
+  }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -50,15 +55,15 @@ class CurdState extends State<Curd> {
     );
   }
 
-  Widget _buildAge() {
+  Widget _buildMobile() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Age'),
+      decoration: InputDecoration(labelText: 'Mobile'),
       validator: (String value) {
-        if (value.isEmpty) return 'Age is required !';
+        if (value.isEmpty) return 'Mobile is required !';
         return null;
       },
       onSaved: (String value) {
-        _age = value;
+        _mobile = value;
       },
     );
   }
@@ -71,7 +76,11 @@ class CurdState extends State<Curd> {
         return null;
       },
       onSaved: (String value) {
-        _gender = value;
+        if (value == 'M') {
+          _gender = true;
+        } else {
+          _gender = false;
+        }
       },
     );
   }
@@ -79,9 +88,9 @@ class CurdState extends State<Curd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Form Demo')),
+      appBar: AppBar(title: Text('Curd Demo')),
       body: Container(
-        margin: EdgeInsets.all(24),
+        margin: EdgeInsets.all(20),
         child: Form(
             key: _formKey,
             child: Column(
@@ -89,7 +98,7 @@ class CurdState extends State<Curd> {
               children: <Widget>[
                 _buildFirstName(),
                 _buildLastName(),
-                _buildAge(),
+                _buildMobile(),
                 _buildGender(),
                 SizedBox(
                   height: 100,
@@ -105,6 +114,16 @@ class CurdState extends State<Curd> {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text("Toast msg"))),
                       }
+                    else
+                      {
+                        _contactHelper.insertContact(Contact(
+                          id: 1,
+                          firstName: _firstName,
+                          lastName: _lastName,
+                          mobile: _mobile,
+                          gender: _gender,
+                        )),
+                      }
                   },
                 ),
               ],
@@ -112,65 +131,4 @@ class CurdState extends State<Curd> {
       ),
     );
   }
-}
-
-
-class _MyHomePageState extends State<Curd> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Baby Name Votes')),
-      body: _buildBody(context),
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
-    // TODO: get actual snapshot from Cloud Firestore
-    return _buildList(context, dummySnapshot);
-  }
-
-  Widget _buildList(BuildContext context, List<Map> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
-    );
-  }
-
-  Widget _buildListItem(BuildContext context, Map data) {
-    final record = Record.fromMap(data);
-
-    return Padding(
-      key: ValueKey(record.name),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: ListTile(
-          title: Text(record.name),
-          trailing: Text(record.votes.toString()),
-          onTap: () => print(record),
-        ),
-      ),
-    );
-  }
-}
-
-class Record {
-  final String name;
-  final int votes;
-  final DocumentReference reference;
-
-  Record.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['name'] != null),
-        assert(map['votes'] != null),
-        name = map['name'],
-        votes = map['votes'];
-
-  Record.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  @override
-  String toString() => "Record<$name:$votes>";
 }
