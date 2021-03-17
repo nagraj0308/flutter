@@ -67,8 +67,6 @@ class ContactHelper {
   }
 
 
-
-
   Future<int> delete(int id) async {
     var db = await this.database;
     return await db.delete(tableName, where: '$columnId = ?', whereArgs: [id]);
