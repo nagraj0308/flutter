@@ -1,4 +1,4 @@
-import 'package:flutter_app/contact.dart';
+import 'package:flutter_app/curd/people.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -38,7 +38,7 @@ class ContactHelper {
       onCreate: (db, version) {
         db.execute('''
           create table $tableName ( 
-          $columnId integer primary key autoincrement, 
+          $columnId integer , 
           $columnFirstName text not null,
           $columnLastName text not null,
           $columnMobile text not null,
@@ -49,24 +49,25 @@ class ContactHelper {
     return database;
   }
 
-  void insertContact(Contact contact) async {
+  Future<List<People>> getPeople() async {
+    Database db= await this.database;
+    var result= await db.query(tableName);
+    List<People> _contacts = [];
+    result.forEach((element) {
+      var contact = People.fromMap(element);
+      _contacts.add(contact);
+    });
+    return _contacts;
+  }
+
+  void insertContact(People people) async {
     var db = await this.database;
-    var result = await db.insert(tableName, contact.toMap());
+    var result = await db.insert(tableName, people.toMap());
     print('result : $result');
   }
 
-  Future<List<Contact>> getContacts() async {
-    List<Contact> _contacts = [];
 
-    var db = await this.database;
-    var result = await db.query(tableName);
-    result.forEach((element) {
-      var contact = Contact.fromMap(element);
-      _contacts.add(contact);
-    });
 
-    return _contacts;
-  }
 
   Future<int> delete(int id) async {
     var db = await this.database;

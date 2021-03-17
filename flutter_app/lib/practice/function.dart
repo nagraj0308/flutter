@@ -9,6 +9,7 @@ class Circle {
 class Nag {
   String name;
   List<Nag> _myList=[];
+  final _saved = Set<Nag>();
 
   Nag(this.name);
 

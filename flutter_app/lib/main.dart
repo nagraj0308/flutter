@@ -1,8 +1,40 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'curd.dart';
+import 'package:flutter_app/curd/add_new_contact.dart';
+import 'package:flutter_app/route.dart';
+import 'curd/all_contacts.dart';
 
-void main() => runApp(MyApp());
+// void main() => runApp(MyApp());
+
+// void main() {
+//   runApp(MaterialApp(
+//     title: 'Named Routes Demo',
+//     // Start the app with the "/" named route. In this case, the app starts
+//     // on the FirstScreen widget.
+//     initialRoute: '/',
+//     routes: {
+//       // When navigating to the "/" route, build the FirstScreen widget.
+//       '/': (context) => FirstScreen(),
+//       // When navigating to the "/second" route, build the SecondScreen widget.
+//       '/second': (context) => SecondScreen(),
+//     },
+//   ));
+// }
+
+void main() {
+  runApp(MaterialApp(
+    title: 'Contacts',
+    // Start the app with the "/" named route. In this case, the app starts
+    // on the FirstScreen widget.
+    initialRoute: '/',
+    routes: {
+      // When navigating to the "/" route, build the FirstScreen widget.
+      '/': (context) => AllContacts(),
+      // When navigating to the "/second" route, build the SecondScreen widget.
+      '/second': (context) => AddNewContact(),
+    },
+  ));
+}
 
 class MyApp extends StatelessWidget {
   @override

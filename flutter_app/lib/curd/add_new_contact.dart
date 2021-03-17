@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app/db_helper.dart';
+import 'package:flutter_app/curd/db_helper.dart';
 
-import 'contact.dart';
-
-class Curd extends StatefulWidget {
+class AddNewContact extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return CurdState();
+    return AddNewContactState();
   }
 }
 
-class CurdState extends State<Curd> {
+class AddNewContactState extends State<AddNewContact> {
   ContactHelper _contactHelper = ContactHelper();
   String _firstName;
   String _lastName;
   String _mobile;
-  bool _gender;
+  String _gender;
+
+  // List<Contact> _saved;
+  // Future<List<Contact>> _contacts;
+  // final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
   void initState() {
@@ -76,11 +78,7 @@ class CurdState extends State<Curd> {
         return null;
       },
       onSaved: (String value) {
-        if (value == 'M') {
-          _gender = true;
-        } else {
-          _gender = false;
-        }
+        _gender = value;
       },
     );
   }
@@ -88,7 +86,9 @@ class CurdState extends State<Curd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Curd Demo')),
+      appBar: AppBar(
+        title: Text('Curd Demo'),
+      ),
       body: Container(
         margin: EdgeInsets.all(20),
         child: Form(
@@ -116,13 +116,13 @@ class CurdState extends State<Curd> {
                       }
                     else
                       {
-                        _contactHelper.insertContact(Contact(
-                          id: 1,
-                          firstName: _firstName,
-                          lastName: _lastName,
-                          mobile: _mobile,
-                          gender: _gender,
-                        )),
+                        // _contactHelper.insertContact(Contact(
+                        //   id: 3,
+                        //   firstName: _firstName,
+                        //   lastName: _lastName,
+                        //   mobile: _mobile,
+                        //   gender: _gender,
+                        // )),
                       }
                   },
                 ),
