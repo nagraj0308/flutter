@@ -31,7 +31,7 @@ class ContactListState extends State<ContactList> {
       body: getContactListView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          navigateToDetail(People(null,'','','', 0), 'Add Contact');
+          navigateToDetail(People(null, '', '', '', 0), 'Add Contact');
         },
         tooltip: 'Add Contact',
         child: Icon(Icons.add),
@@ -52,10 +52,11 @@ class ContactListState extends State<ContactList> {
             leading: CircleAvatar(
               backgroundColor:
                   getGenderColor(this.contactList[position].gender),
-              child:Icon(Icons.person),
+              child: Icon(Icons.person),
             ),
             title: Text(
-              this.contactList[position].firstName + this.contactList[position].lastName,
+              this.contactList[position].firstName +
+                  this.contactList[position].lastName,
               style: titleStyle,
             ),
             subtitle: Text(this.contactList[position].mobile),
@@ -89,7 +90,6 @@ class ContactListState extends State<ContactList> {
     }
   }
 
-
   void _delete(BuildContext context, People people) async {
     int result = await databaseHelper.deleteContact(people.id);
     if (result != 0) {
@@ -106,7 +106,7 @@ class ContactListState extends State<ContactList> {
   void navigateToDetail(People people, String title) async {
     bool result =
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ContactDetail(people, title) ;
+      return ContactDetail(people, title);
     }));
 
     if (result == true) {
